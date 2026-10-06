@@ -18,7 +18,7 @@
     pauseButton.disabled = !running;
     durationInput.disabled = running;
     durationHint.textContent = running ? 'Pause to change the duration.' : 'Choose 1–180 minutes.';
-    document.title = running ? `${time.textContent} · Still` : 'Still — Focus Timer';
+    document.title = running ? `${time.textContent} · Flow` : 'Flow — Focus Timer';
   }
   async function prepareAudio() {
     try {
