@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f6f3ed"><meta name="description" content="A quiet space for 25 minutes of deep focus.">
+<title>Still — Focus Timer</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23f6f3ed'/%3E%3Ccircle cx='16' cy='16' r='10' fill='none' stroke='%23746d62' stroke-width='1.5'/%3E%3Cpath d='M16 9v7l4 3' fill='none' stroke='%23746d62' stroke-width='1.5'/%3E%3C/svg%3E">
+<style>
+:root{color-scheme:light;--paper:#f6f3ed;--ink:#4c4943;--muted:#79736a;--line:#d6d0c6;--accent:#a69b88}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-weight:400}button,textarea{font:inherit}button{-webkit-tap-highlight-color:transparent}main{min-height:100svh;display:flex;flex-direction:column;align-items:center;padding:48px 24px 25px}header{text-align:center}.wordmark{font-family:Didot,"Bodoni MT","Times New Roman",serif;font-size:34px;font-weight:400;letter-spacing:.07em;margin:0}.eyebrow{font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);margin:12px 0 0}.session{display:flex;flex-direction:column;align-items:center;margin:auto 0;padding:54px 0 60px;width:100%;max-width:440px}.dial{position:relative;width:min(100%,330px);aspect-ratio:1;display:flex;align-items:center;justify-content:center;flex-direction:column}.ring{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg);overflow:visible}.ring circle{fill:none;stroke-width:1}.track{stroke:#e0dad0}.progress{stroke:var(--accent);stroke-dasharray:100;stroke-dashoffset:0;transition:stroke-dashoffset .4s linear;stroke-linecap:round}.time{position:relative;white-space:nowrap;font-family:Didot,"Bodoni MT","Times New Roman",serif;font-size:clamp(66px,20vw,87px);font-weight:400;letter-spacing:-.045em;line-height:1.1;font-variant-numeric:lining-nums tabular-nums}.status{position:relative;font-size:12px;letter-spacing:.19em;text-transform:uppercase;margin-top:17px;color:var(--muted);min-height:15px}.controls{display:flex;gap:12px;justify-content:center;width:100%;margin-top:38px}button{background:transparent;border:1px solid #a69c8e;border-radius:5px;color:var(--ink);height:47px;min-width:89px;padding:0 20px;font-size:14px;transition:border-color .2s,opacity .2s;cursor:pointer}button:hover:enabled{border-color:var(--ink)}button:disabled{opacity:.37;cursor:default}button:focus-visible,textarea:focus-visible{outline:2px solid var(--muted);outline-offset:5px}.task{margin-top:49px;width:100%;max-width:290px;text-align:center}.task label{display:block;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:13px}textarea{display:block;background:transparent;resize:none;border:0;border-bottom:1px solid var(--line);border-radius:0;width:100%;height:55px;text-align:center;padding:6px 4px 10px;color:var(--ink);font-size:16px;line-height:1.5}textarea::placeholder{color:#918a80}footer{font-size:12px;color:var(--muted);text-align:center;letter-spacing:.025em;line-height:1.6}.audio-note{font-size:12px;line-height:1.5;color:var(--muted);text-align:center;max-width:290px;margin:16px 0 0}.audio-note:empty{display:none}@media(min-width:700px){main{padding-top:52px;padding-bottom:30px}.session{padding:38px 0 44px}.dial{width:350px}.time{font-size:96px}.controls{margin-top:40px}.task{margin-top:45px}}@media(max-height:740px){main{padding-top:26px}.session{padding:30px 0}.dial{max-width:270px}.controls{margin-top:26px}.task{margin-top:30px}}@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<main>
+<header><h1 class="wordmark">still.</h1><p class="eyebrow">A little room to focus</p></header>
+<section class="session" aria-label="Focus timer">
+<div class="dial"><svg class="ring" viewBox="0 0 340 340" aria-hidden="true"><circle class="track" cx="170" cy="170" r="164"/><circle id="progress" class="progress" cx="170" cy="170" r="164" pathLength="100"/></svg><div id="time" class="time" role="timer" aria-label="25 minutes remaining">25:00</div><div class="status" id="status" role="status" aria-live="polite">Ready when you are</div></div>
+<div class="controls"><button id="start">Start</button><button id="pause" disabled>Pause</button><button id="reset">Reset</button></div>
+<div class="task"><label for="task">One thing at a time</label><textarea id="task" rows="2" maxlength="200" placeholder="Writing Chapter 1" aria-label="Current task" spellcheck="true"></textarea></div>
+<p class="audio-note" id="audio-note" role="status"></p>
+</section>
+<footer>25 minutes. Just this moment.</footer>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
