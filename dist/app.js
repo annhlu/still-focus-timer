@@ -1,11 +1,13 @@
 (() => {
   'use strict';
-  const duration = 25 * 60 * 1000;
+  let duration = 25 * 60 * 1000;
   let remaining = duration, deadline = 0, running = false, interval = null;
   let audio = null, voices = [], wakeLock = null;
   const time = document.getElementById('time'), status = document.getElementById('status');
   const startButton = document.getElementById('start'), pauseButton = document.getElementById('pause');
   const progress = document.getElementById('progress'), note = document.getElementById('audio-note');
+  const durationInput = document.getElementById('duration');
+  const durationHint = document.getElementById('duration-hint');
   function render() {
     const seconds = Math.ceil(remaining / 1000);
     const minutes = Math.floor(seconds / 60), tail = seconds % 60;
@@ -14,6 +16,8 @@
     progress.style.strokeDashoffset = String(100 * (1 - remaining / duration));
     startButton.disabled = running;
     pauseButton.disabled = !running;
+    durationInput.disabled = running;
+    durationHint.textContent = running ? 'Pause to change the duration.' : 'Choose 1–180 minutes.';
     document.title = running ? `${time.textContent} · Still` : 'Still — Focus Timer';
   }
   async function prepareAudio() {
@@ -66,6 +70,7 @@
   }
   function start() {
     if (running) return;
+    if (!applyDuration()) return;
     if (remaining <= 0) remaining = duration;
     silence(); void prepareAudio();
     running = true; deadline = Date.now() + remaining;
@@ -80,9 +85,31 @@
   }
   function reset() {
     running = false; clearInterval(interval); remaining = duration;
+    durationInput.value = String(duration / 60000);
+    durationInput.setCustomValidity('');
     silence(); releaseScreen(); note.textContent = '';
     status.textContent = 'Ready when you are'; render();
   }
+  function applyDuration() {
+    const minutes = Number(durationInput.value);
+    if (!Number.isInteger(minutes) || minutes < 1 || minutes > 180) {
+      durationInput.setCustomValidity('Enter a whole number from 1 to 180.');
+      durationInput.reportValidity();
+      return false;
+    }
+    durationInput.setCustomValidity('');
+    const nextDuration = minutes * 60 * 1000;
+    if (nextDuration !== duration) {
+      duration = nextDuration;
+      reset();
+    }
+    return true;
+  }
+  durationInput.addEventListener('input', () => durationInput.setCustomValidity(''));
+  durationInput.addEventListener('change', applyDuration);
+  durationInput.addEventListener('keydown', event => {
+    if (event.key === 'Enter' && applyDuration()) durationInput.blur();
+  });
   startButton.addEventListener('click', start);
   pauseButton.addEventListener('click', pause);
   document.getElementById('reset').addEventListener('click', reset);
@@ -92,7 +119,7 @@
     const lifecycle = new AbortController();
     const tool = {
       name: 'control_focus_timer', title: 'Control focus timer',
-      description: 'Start, pause, or reset the visible 25-minute timer, or read its current state.',
+      description: 'Start, pause, or reset the visible focus timer, or read its current state.',
       inputSchema: { type: 'object', properties: { action: { type: 'string', enum: ['start','pause','reset','read'] } }, required: ['action'], additionalProperties: false },
       annotations: { readOnlyHint: false, untrustedContentHint: false },
       execute(input) {
